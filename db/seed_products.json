@@ -1,0 +1,422 @@
+[
+  {
+    "Name": "Alpine Storm Shell",
+    "Description": "A featherweight hooded layer that sheds sleet and gusts on exposed ridgelines above the treeline.",
+    "Category": "Outdoor",
+    "Price": 189.99
+  },
+  {
+    "Name": "Glacier Down Parka",
+    "Description": "Insulated with lofted goose fill to trap body heat through sub-zero mornings and long chairlift rides.",
+    "Category": "Outdoor",
+    "Price": 279.0
+  },
+  {
+    "Name": "Riverbend Trekking Poles",
+    "Description": "Collapsible carbon walking supports that steady each stride across loose scree and muddy switchbacks.",
+    "Category": "Outdoor",
+    "Price": 74.5
+  },
+  {
+    "Name": "Basecamp Hydration Bladder",
+    "Description": "A three-liter reservoir with a bite valve that keeps you drinking on the move without stopping to unpack.",
+    "Category": "Outdoor",
+    "Price": 34.95
+  },
+  {
+    "Name": "Meadow Two-Person Tent",
+    "Description": "A quick-pitch shelter with taped seams and a bug mesh canopy for overnight stays in the backcountry.",
+    "Category": "Outdoor",
+    "Price": 219.0
+  },
+  {
+    "Name": "Nightfall Sleeping Bag",
+    "Description": "A mummy-cut cocoon rated for frosty campsites, packing small enough to lash under a rucksack lid.",
+    "Category": "Outdoor",
+    "Price": 149.99
+  },
+  {
+    "Name": "Switchback Trail Runners",
+    "Description": "Grippy lugged footwear built to bite into rocky paths and drain quickly after a stream crossing.",
+    "Category": "Outdoor",
+    "Price": 128.0
+  },
+  {
+    "Name": "Summit Headlamp",
+    "Description": "A rechargeable brow-mounted beam with a red night mode for reading maps inside a dim shelter.",
+    "Category": "Outdoor",
+    "Price": 42.0
+  },
+  {
+    "Name": "Ember Cast-Iron Skillet",
+    "Description": "A pre-seasoned heavy pan that holds searing heat evenly for crusty steaks and campfire cornbread.",
+    "Category": "Kitchen",
+    "Price": 39.99
+  },
+  {
+    "Name": "Sous Chef Knife",
+    "Description": "A balanced high-carbon blade that glides through onions and herbs with a razor edge that holds.",
+    "Category": "Kitchen",
+    "Price": 89.0
+  },
+  {
+    "Name": "Barista Pour-Over Set",
+    "Description": "A glass carafe and reusable filter cone for brewing a clean, bright morning cup one slow drip at a time.",
+    "Category": "Kitchen",
+    "Price": 46.5
+  },
+  {
+    "Name": "Harvest Stand Mixer",
+    "Description": "A geared countertop workhorse that whips dough, batter, and meringue with a lift-up head and dough hook.",
+    "Category": "Kitchen",
+    "Price": 279.0
+  },
+  {
+    "Name": "Orchard Cutting Board",
+    "Description": "An end-grain maple block that resists gouges and stays gentle on your finest steel edges.",
+    "Category": "Kitchen",
+    "Price": 58.0
+  },
+  {
+    "Name": "Steeping Tea Kettle",
+    "Description": "A whistling stovetop vessel with a heatproof handle that brings water to a rolling boil in minutes.",
+    "Category": "Kitchen",
+    "Price": 52.0
+  },
+  {
+    "Name": "Garden Salad Spinner",
+    "Description": "A crank-driven basket that flings water off freshly rinsed greens so dressing clings instead of sliding.",
+    "Category": "Kitchen",
+    "Price": 27.99
+  },
+  {
+    "Name": "Sunrise Waffle Press",
+    "Description": "A nonstick griddle that bakes golden breakfast grids with deep pockets for syrup and melted butter.",
+    "Category": "Kitchen",
+    "Price": 64.0
+  },
+  {
+    "Name": "Nimbus Wireless Earbuds",
+    "Description": "Pocketable buds with active noise cancellation that hush a commuter train into a quiet listening booth.",
+    "Category": "Electronics",
+    "Price": 149.0
+  },
+  {
+    "Name": "Aperture Mirrorless Camera",
+    "Description": "A compact body with a fast sensor that freezes fast action and paints low-light scenes with little grain.",
+    "Category": "Electronics",
+    "Price": 899.0
+  },
+  {
+    "Name": "Voltway Power Bank",
+    "Description": "A slim reserve cell that tops up a drained phone twice over during a long day away from any outlet.",
+    "Category": "Electronics",
+    "Price": 45.99
+  },
+  {
+    "Name": "Beacon Smart Speaker",
+    "Description": "A voice-driven room assistant that answers questions, sets timers, and fills a den with warm sound.",
+    "Category": "Electronics",
+    "Price": 99.0
+  },
+  {
+    "Name": "Pixelio 4K Monitor",
+    "Description": "A crisp ultrahigh-definition panel with slim bezels for editing photos and stacking spreadsheets side by side.",
+    "Category": "Electronics",
+    "Price": 349.0
+  },
+  {
+    "Name": "Tempo Fitness Tracker",
+    "Description": "A wrist band that logs heart rate, counts steps, and nudges you to stand after a long sit.",
+    "Category": "Electronics",
+    "Price": 79.99
+  },
+  {
+    "Name": "Streamline Mechanical Keyboard",
+    "Description": "A tactile clicky typing deck with hot-swap switches and backlit keys for late-night coding sessions.",
+    "Category": "Electronics",
+    "Price": 119.0
+  },
+  {
+    "Name": "Cascade Robot Vacuum",
+    "Description": "A self-charging disc that maps a floor, dodges furniture legs, and sweeps up pet hair while you are out.",
+    "Category": "Electronics",
+    "Price": 299.0
+  },
+  {
+    "Name": "Harbor Merino Base Layer",
+    "Description": "A soft next-to-skin top that wicks sweat and stays odor-free through back-to-back wear on cold days.",
+    "Category": "Apparel",
+    "Price": 68.0
+  },
+  {
+    "Name": "Cobblestone Chelsea Boots",
+    "Description": "Slip-on leather footwear with elastic gores and a stacked heel for rainy city sidewalks and offices.",
+    "Category": "Apparel",
+    "Price": 158.0
+  },
+  {
+    "Name": "Drift Linen Shirt",
+    "Description": "A breathable button-up woven from airy flax that keeps you cool through a humid seaside afternoon.",
+    "Category": "Apparel",
+    "Price": 72.0
+  },
+  {
+    "Name": "Ridgeline Denim Jeans",
+    "Description": "Rugged five-pocket trousers with a touch of stretch and reinforced stitching for everyday knockabout wear.",
+    "Category": "Apparel",
+    "Price": 89.0
+  },
+  {
+    "Name": "Lumen Rain Trench",
+    "Description": "A knee-length water-repellent coat with a storm flap and belt that turns a downpour into a non-event.",
+    "Category": "Apparel",
+    "Price": 165.0
+  },
+  {
+    "Name": "Meridian Wool Blazer",
+    "Description": "A structured tailored jacket with notched lapels that dresses up an interview or a dinner reservation.",
+    "Category": "Apparel",
+    "Price": 210.0
+  },
+  {
+    "Name": "Pace Running Socks",
+    "Description": "Cushioned cotton-blend footwear with arch support that fights blisters over many logged miles.",
+    "Category": "Apparel",
+    "Price": 16.99
+  },
+  {
+    "Name": "Solstice Sun Hat",
+    "Description": "A wide-brimmed woven topper that shades your face and neck through a bright day at the shoreline.",
+    "Category": "Apparel",
+    "Price": 38.0
+  },
+  {
+    "Name": "Quillmark Fountain Pen",
+    "Description": "A refillable brass writing instrument with a smooth nib that lays down rich ink for signing letters.",
+    "Category": "Office",
+    "Price": 54.0
+  },
+  {
+    "Name": "Ledgerline Notebook",
+    "Description": "A hardbound journal of dotted acid-free pages that lies flat for sketching plans and jotting to-do lists.",
+    "Category": "Office",
+    "Price": 22.0
+  },
+  {
+    "Name": "Pivot Ergonomic Chair",
+    "Description": "An adjustable mesh seat with lumbar support that keeps your back happy through long stretches at the desk.",
+    "Category": "Office",
+    "Price": 329.0
+  },
+  {
+    "Name": "Clarity Desk Lamp",
+    "Description": "A dimmable arm-mounted light with a warm-to-cool glow that eases eye strain during evening paperwork.",
+    "Category": "Office",
+    "Price": 59.0
+  },
+  {
+    "Name": "Sortwell File Organizer",
+    "Description": "A tiered rack of open slots that corrals loose documents and mail into tidy reachable stacks.",
+    "Category": "Office",
+    "Price": 31.5
+  },
+  {
+    "Name": "Beacon Whiteboard",
+    "Description": "A wall-mounted dry-erase panel with a marker tray for mapping ideas and tracking a team's weekly goals.",
+    "Category": "Office",
+    "Price": 74.0
+  },
+  {
+    "Name": "Crosscut Paper Shredder",
+    "Description": "A quiet bin-top machine that turns sensitive statements into confetti to keep private details out of reach.",
+    "Category": "Office",
+    "Price": 88.0
+  },
+  {
+    "Name": "Anchor Standing Desk",
+    "Description": "A motorized height-adjustable work surface that glides from sitting to upright at the tap of a button.",
+    "Category": "Office",
+    "Price": 419.0
+  },
+  {
+    "Name": "Frostcore Cooler",
+    "Description": "A double-walled chest that keeps ice frozen for days, so food and beverages stay chilled through a long weekend off the grid.",
+    "Category": "Outdoor",
+    "Price": 129.0
+  },
+  {
+    "Name": "Cascade Gravity Filter",
+    "Description": "Hangs from a branch and turns murky stream water into safe drinking water with no pumping and no batteries.",
+    "Category": "Outdoor",
+    "Price": 59.0
+  },
+  {
+    "Name": "Driftwood Camp Hammock",
+    "Description": "A packable nylon sling with tree straps that turns any two trunks into a swaying afternoon nap spot.",
+    "Category": "Outdoor",
+    "Price": 45.0
+  },
+  {
+    "Name": "Ember Camp Stove",
+    "Description": "A compact folding burner that boils a pot of water in minutes on a single canister, miles from any kitchen.",
+    "Category": "Outdoor",
+    "Price": 39.0
+  },
+  {
+    "Name": "Vantage Trail Pack",
+    "Description": "A forty-liter carry with a padded hip belt that spreads a heavy load across your hips on all-day treks.",
+    "Category": "Outdoor",
+    "Price": 149.0
+  },
+  {
+    "Name": "Northstar Handheld GPS",
+    "Description": "A rugged pocket navigator that pins your position and traces the way back when the trail signs run out.",
+    "Category": "Outdoor",
+    "Price": 199.0
+  },
+  {
+    "Name": "Crema Espresso Machine",
+    "Description": "A countertop brewer that pulls a rich crema-topped shot and steams silky milk for cafe drinks at home.",
+    "Category": "Kitchen",
+    "Price": 349.0
+  },
+  {
+    "Name": "Vortex Personal Blender",
+    "Description": "A single-serve mixer that pulverizes frozen fruit and greens into a smooth grab-and-go drink in seconds.",
+    "Category": "Kitchen",
+    "Price": 79.0
+  },
+  {
+    "Name": "Halo Air Fryer",
+    "Description": "A rapid convection basket that crisps fries and wings golden with barely a spoonful of oil.",
+    "Category": "Kitchen",
+    "Price": 119.0
+  },
+  {
+    "Name": "Timber Cutting Board",
+    "Description": "A thick end-grain block that is gentle on knife edges and doubles as a platter for cheese and warm bread.",
+    "Category": "Kitchen",
+    "Price": 55.0
+  },
+  {
+    "Name": "Hearthstone Dutch Oven",
+    "Description": "An enameled cast pot that goes from stovetop sear to slow oven braise, turning tough cuts tender over hours.",
+    "Category": "Kitchen",
+    "Price": 189.0
+  },
+  {
+    "Name": "Aroma Spice Carousel",
+    "Description": "A rotating stand of labeled jars that keeps cumin, paprika, and cinnamon a fingertip away while you work.",
+    "Category": "Kitchen",
+    "Price": 34.0
+  },
+  {
+    "Name": "Hush Noise-Canceling Headphones",
+    "Description": "Over-ear cans that seal out the world so you can sink into a playlist or focus deeply in a loud room.",
+    "Category": "Electronics",
+    "Price": 279.0
+  },
+  {
+    "Name": "Lull Sound Machine",
+    "Description": "A bedside speaker that loops gentle rain and ocean waves to ease a restless mind toward sleep.",
+    "Category": "Electronics",
+    "Price": 49.0
+  },
+  {
+    "Name": "Papyrus E-Reader",
+    "Description": "A glare-free slate that holds a thousand books and reads like paper under bright sun or a dim lamp.",
+    "Category": "Electronics",
+    "Price": 139.0
+  },
+  {
+    "Name": "Clarity Webcam",
+    "Description": "A clip-on camera that keeps you sharp and well lit on video calls, even in a shadowy home office.",
+    "Category": "Electronics",
+    "Price": 69.0
+  },
+  {
+    "Name": "Glow Smart Bulb",
+    "Description": "A color-shifting bulb you dim from your phone, from warm candlelight to bright daylight, without leaving the couch.",
+    "Category": "Electronics",
+    "Price": 22.0
+  },
+  {
+    "Name": "Beam Pocket Projector",
+    "Description": "A palm-sized projector that throws a hundred-inch picture onto any blank wall for a spur-of-the-moment movie night.",
+    "Category": "Electronics",
+    "Price": 199.0
+  },
+  {
+    "Name": "Cloudspun Lounge Robe",
+    "Description": "A plush waffle-knit wrap that turns the end of a long day into a warm, unhurried evening on the couch.",
+    "Category": "Apparel",
+    "Price": 68.0
+  },
+  {
+    "Name": "Meridian Road Runners",
+    "Description": "Lightweight cushioned shoes that spring back stride after stride through morning miles on the pavement.",
+    "Category": "Apparel",
+    "Price": 128.0
+  },
+  {
+    "Name": "Basin Merino Socks",
+    "Description": "Cushioned wool socks that wick damp and fend off blisters through a full day spent on your feet.",
+    "Category": "Apparel",
+    "Price": 24.0
+  },
+  {
+    "Name": "Tidepool Swim Trunks",
+    "Description": "Quick-drying shorts with a mesh liner that go from the surf to a beachside lunch with no soggy wait.",
+    "Category": "Apparel",
+    "Price": 38.0
+  },
+  {
+    "Name": "Foundry Work Gloves",
+    "Description": "Reinforced leather-palm gloves that guard your hands while hauling lumber, gravel, or firewood.",
+    "Category": "Apparel",
+    "Price": 28.0
+  },
+  {
+    "Name": "Ascend Standing Desk",
+    "Description": "A motorized surface that glides from seated to standing at the tap of a button, easing a stiff back through a long workday.",
+    "Category": "Office",
+    "Price": 399.0
+  },
+  {
+    "Name": "Verdant Desk Plant",
+    "Description": "A low-light potted succulent that adds a calm spot of green to a busy workspace and asks for water just once a week.",
+    "Category": "Office",
+    "Price": 26.0
+  },
+  {
+    "Name": "Cadence Focus Timer",
+    "Description": "A silent cube you flip to start a work sprint; it counts down your session and nudges you to step away and rest.",
+    "Category": "Office",
+    "Price": 34.0
+  },
+  {
+    "Name": "Almanac Weekly Planner",
+    "Description": "A lay-flat book with a week-at-a-glance spread for mapping meetings, deadlines, and errands by hand.",
+    "Category": "Office",
+    "Price": 22.0
+  },
+  {
+    "Name": "Tidewell Cable Tray",
+    "Description": "A magnetic tray and clips that corral charging cords so they stop sliding down behind the desk.",
+    "Category": "Office",
+    "Price": 18.0
+  },
+  {
+    "Name": "Lumen Desk Mat",
+    "Description": "A large soft-touch pad that gives a mouse a smooth glide and shields the desktop from scratches and spills.",
+    "Category": "Office",
+    "Price": 29.0
+  },
+  {
+    "Name": "Loft Fleece Hoodie",
+    "Category": "Apparel",
+    "Price": 58.0,
+    "Description": "A brushed fleece pullover with a roomy hood that traps warmth for chilly mornings and slow, lazy weekends at home."
+  }
+]

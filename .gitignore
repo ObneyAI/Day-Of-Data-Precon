@@ -1,0 +1,23 @@
+# ============================================================================
+# STUDENT REPO — publish ONLY the files students need.
+# WHITELIST strategy: ignore everything, then explicitly re-include the
+# student files. Everything else — instructor slides/docs/answer-keys, editor
+# caches (.clj-kondo/.lsp/.playwright-mcp), env, generated DBs — stays LOCAL.
+# ============================================================================
+
+# 1) ignore everything at the repo root
+/*
+
+# 2) re-include exactly the student-facing files
+!/.gitignore
+!/README.md
+!/db/
+!/modules/
+
+# 3) inside the allowed folders, still drop generated / env / caches
+db/workshop_catalog.sqlite
+db/.env
+**/__pycache__/
+**/*.pyc
+**/.ipynb_checkpoints/
+**/.DS_Store
