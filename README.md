@@ -19,7 +19,7 @@ source ~/Documents/dod-workshop/.venv/bin/activate
 
 python -c "import fastmcp, mssql_python, sentence_transformers; print('ready')"
 ```
-Didn't finish the pre-work? Ask your instructor — there's a no-Docker backup so nobody's stuck.
+Didn't finish the pre-work? The full step-by-step install guide is in **[`SETUP.md`](SETUP.md)**, and there's a no-Docker backup so nobody's stuck.
 
 ## 2. Load your catalog (once, in a terminal)
 ```bash
@@ -30,6 +30,9 @@ python db/create_readonly_login.py   # create the read-only DB login you'll use 
 > **No Docker?** Instead run `python db/setup_sqlite.py` and set `WORKSHOP_DB=sqlite`. Same results, no container.
 
 ## 3. Follow along
+📊 **The lesson slides are in [`lesson-slides/`](lesson-slides/)** — open `welcome.html`, `m3.html`, and `mcp.html`
+in your browser to follow along at your own pace (arrow keys / number keys to navigate).
+
 Launch Jupyter Lab (`jupyter lab`) and open the notebooks in `modules/`:
 
 - **Module 1 — Vectors & Embeddings** → `modules/M1_embeddings.ipynb`

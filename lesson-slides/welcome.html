@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome: AI for the Rest of Us</title>
+    <!-- Obney.ai Brand Fonts (only network dependency; degrades to system fonts offline) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2BB8C4;
+            --primary-dark: #229BA5;
+            --primary-light: #A8F0F4;
+            --secondary: #E07850;
+            --success: #7BC47F;
+            --warning: #E0C878;
+            --danger: #D85858;
+            --bg-dark: #1A2E3B;
+            --bg-darker: #142430;
+            --bg-light: #FFF5EB;
+            --text-light: #FFF5EB;
+            --text-dark: #1A2E3B;
+            --text-muted: #6B8A99;
+            --border: #2D4A5A;
+            --code-bg: #142430;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        aside.notes { display: none; }
+
+        .slide {
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 60px 80px 100px 80px;
+            min-height: 100vh;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .slide.title-slide { justify-content: center; align-items: center; text-align: center; }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .subtitle { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 40px; }
+
+        .presenter { font-size: 1.2rem; color: var(--primary-light); font-weight: 600; margin-bottom: 40px; }
+
+        .arrival-line {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.05rem;
+            color: var(--text-light);
+            background: var(--bg-darker);
+            padding: 18px 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .loop-diagram {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2rem;
+            background: var(--bg-darker);
+            padding: 30px 50px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .loop-step { display: inline-block; padding: 8px 16px; margin: 0 5px; border-radius: 6px; background: var(--bg-dark); }
+        .loop-step.active { background: var(--primary); color: var(--bg-dark); font-weight: 600; }
+        .loop-arrow { color: var(--text-muted); }
+
+        .code-block {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .code-block .keyword { color: #C586C0; }
+        .code-block .string { color: #CE9178; }
+        .code-block .function { color: #DCDCAA; }
+        .code-block .comment { color: #6A9955; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .three-column { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
+
+        .card { background: var(--bg-darker); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+        .card-title { font-size: 1.3rem; font-weight: 600; color: var(--primary); margin-bottom: 16px; }
+
+        .bullet-list { list-style: none; padding-left: 0; }
+        .bullet-list li { padding: 8px 0; padding-left: 24px; position: relative; }
+        .bullet-list li::before { content: "\2022"; color: var(--primary); position: absolute; left: 0; font-weight: bold; }
+
+        .tip-box {
+            background: rgba(43, 184, 196, 0.12);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .tip-icon { font-size: 1.3rem; }
+
+        .hierarchy-diagram {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--bg-darker);
+            padding: 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            line-height: 1.8;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .api-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .api-table th, .api-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .api-table th { background: var(--bg-darker); color: var(--primary); font-weight: 600; }
+        .api-table code { font-family: 'IBM Plex Mono', monospace; background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+        .api-table .ok { color: var(--success); font-family: 'IBM Plex Mono', monospace; }
+
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+        .badge.model { background: rgba(224, 120, 80, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+        .badge.app { background: rgba(43, 184, 196, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+        .badge.user { background: rgba(224, 200, 120, 0.15); color: var(--warning); border: 1px solid var(--warning); }
+
+        .mode-switch { background: rgba(224, 120, 80, 0.15); border: 2px solid var(--secondary); border-radius: 12px; padding: 24px; margin: 8px 0; }
+        .mode-switch-title { color: var(--secondary); font-weight: 700; font-size: 1.3rem; margin-bottom: 16px; }
+
+        .numbered-list { counter-reset: item; list-style: none; padding-left: 0; }
+        .numbered-list li { counter-increment: item; padding: 10px 0; padding-left: 40px; position: relative; }
+        .numbered-list li::before {
+            content: counter(item);
+            position: absolute;
+            left: 0;
+            top: 8px;
+            background: var(--primary);
+            color: var(--bg-dark);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .numbered-list .code-block { margin-top: 10px; white-space: pre-wrap; word-break: break-word; }
+
+        .wow-quote {
+            font-size: 1.6rem;
+            line-height: 1.5;
+            color: var(--primary-light);
+            background: var(--bg-darker);
+            border-left: 4px solid var(--primary);
+            padding: 24px 30px;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+        }
+
+        /* Big fill-in-the-blank visual for "what is AI" */
+        .fill-blank {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 2.4rem;
+            font-weight: 600;
+            text-align: center;
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 50px 30px;
+            line-height: 1.6;
+        }
+        .fill-blank .blank { color: var(--warning); border-bottom: 3px dashed var(--warning); padding: 0 20px; }
+        .fill-blank .answer { color: var(--success); font-weight: 700; }
+        .fill-blank .arrow { color: var(--text-muted); margin: 0 18px; }
+
+        /* Big vector visual for "how does it understand you" */
+        .vector-visual {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px 30px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .vector-visual .phrase { color: var(--primary-light); }
+        .vector-visual .arrow { color: var(--text-muted); margin: 0 16px; }
+        .vector-visual .nums { color: var(--warning); }
+        .vector-visual .caption { display: block; margin-top: 14px; font-size: 0.95rem; color: var(--text-muted); font-weight: 400; }
+
+        .bridge-line { font-size: 1.5rem; font-weight: 700; color: var(--secondary); text-align: center; margin-top: 8px; }
+
+        .live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(224, 120, 80, 0.15);
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            border-radius: 999px;
+            padding: 12px 24px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .lobster-box {
+            background: rgba(224, 120, 80, 0.12);
+            border: 1px dashed var(--secondary);
+            border-radius: 12px;
+            padding: 20px 24px;
+        }
+        .lobster-box .lobster-title { color: var(--secondary); font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; }
+
+        .pill-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .pill { background: var(--bg-darker); border: 1px solid var(--border); border-radius: 999px; padding: 10px 20px; font-weight: 600; }
+        .pill.ro { border-color: var(--success); color: var(--success); }
+        .pill.no { border-color: var(--danger); color: var(--danger); }
+
+        .promise {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--primary-light);
+            background: var(--bg-darker);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 30px 36px;
+            text-align: center;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--bg-darker);
+            border-top: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { background: var(--primary-light); }
+        .nav-btn:disabled { background: var(--border); cursor: not-allowed; }
+
+        .notes-btn { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+        .notes-btn:hover { color: var(--primary-light); border-color: var(--primary); background: transparent; }
+
+        .slide-counter { font-family: 'IBM Plex Mono', monospace; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <!-- SLIDE 1: Welcome / holding slide -->
+    <div class="slide title-slide active" data-slide="1">
+        <h1 class="main-title">AI for the Rest of Us</h1>
+        <p class="subtitle">Vibe Coding &amp; Building MCP Servers with FastMCP</p>
+        <p class="presenter">Daryl Roberts &middot; Head of AI, obney.ai</p>
+        <div class="arrival-line">Grab a seat &middot; get on Wi-Fi &middot; we start at 8:30 &middot; Not set up yet? Next slide &rarr;</div>
+        <div class="tip-box" style="margin-top:24px">
+            <span class="tip-icon">&#128229;</span>
+            <span><strong>First, grab today's files</strong> (everyone): <code>git clone https://github.com/ObneyAI/Day-Of-Data-Precon.git</code> &rarr; <code>cd Day-Of-Data-Precon</code> &rarr; turn on the env you built: <code>source ~/Documents/dod-workshop/.venv/bin/activate</code></span>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: Not set up yet? Do this now -->
+    <div class="slide" data-slide="2">
+        <h2 class="slide-title">Not set up yet? Do this now (~10 min)</h2>
+        <div class="slide-content">
+            <ol class="numbered-list">
+                <li><strong>Docker Desktop running</strong>, then start the database (one line &mdash; the <strong>single quotes</strong> matter on Mac):
+                    <div class="code-block">docker run -e "ACCEPT_EULA=Y" -e 'MSSQL_SA_PASSWORD=Workshop!2026Pass' -p 1433:1433 --name dod-sql -d mcr.microsoft.com/mssql/server:2025-latest</div>
+                </li>
+                <li><strong>Turn on your workshop env + install packages.</strong> <code>source .venv/bin/activate</code> (Mac) or <code>.venv\Scripts\activate</code> (Windows), then:
+                    <div class="code-block">pip install fastmcp mssql-python sentence-transformers staticvectors jupyter numpy plotly scikit-learn</div>
+                </li>
+                <li>Open <strong>Claude Desktop</strong> and sign in (Claude Pro).</li>
+                <li>Confirm <strong>Claude Code</strong>: run <code>claude</code> &mdash; it opens.</li>
+            </ol>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>Full step-by-step = the guide in your registration email. Stuck? Raise your hand &mdash; there's a no-Docker backup, nobody's left behind.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: Check it worked -->
+    <div class="slide" data-slide="3">
+        <h2 class="slide-title">Check it worked (30 seconds)</h2>
+        <div class="slide-content">
+            <table class="api-table">
+                <thead>
+                    <tr><th>Run this</th><th>You should see</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>docker ps</code></td>
+                        <td>a row for <span class="ok">dod-sql</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>python -c "import fastmcp, mssql_python, sentence_transformers, staticvectors, plotly, sklearn; print('packages ok')"</code></td>
+                        <td><span class="ok">packages ok</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>claude --version</code></td>
+                        <td>a version number</td>
+                    </tr>
+                    <tr>
+                        <td>Open <strong>Claude Desktop</strong></td>
+                        <td>opens, signed in</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="tip-box">
+                <span class="tip-icon">&#9989;</span>
+                <span>All &#9989; &rarr; you're ready. Any &#10060; &rarr; flag me.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: What is AI, really? -->
+    <div class="slide" data-slide="4">
+        <h2 class="slide-title">What is AI, really?</h2>
+        <div class="slide-content">
+            <div class="wow-quote">An LLM is a very good next-word guesser.</div>
+            <div class="fill-blank">The sky is <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="arrow">&rarr;</span><span class="answer">blue</span></div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>It read a huge chunk of the internet and learned what usually comes next. It predicts text &mdash; it's a tool, not magic.</span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SLIDE 5: How does it understand you? (bridge into M1) -->
+    <div class="slide" data-slide="5">
+        <h2 class="slide-title">How does it "understand" you?</h2>
+        <div class="slide-content">
+            <p>It doesn't read your words like we do &mdash; it turns them into a list of numbers (a <strong>vector</strong>) that captures <em>meaning</em>.</p>
+            <div class="vector-visual">
+                <span class="phrase">"waterproof jacket"</span><span class="arrow">&rarr;</span><span class="nums">[ 0.12, -0.44, 0.98, ... ]</span>
+                <span class="caption">384 numbers</span>
+            </div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>Similar meanings &rarr; similar numbers. That's the secret behind everything we do today.</span>
+            </div>
+            <div class="bridge-line">&rarr; Up next: <strong>vectors &amp; embeddings.</strong></div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: Today's journey -->
+    <div class="slide" data-slide="6">
+        <h2 class="slide-title">Today's journey</h2>
+        <div class="slide-content">
+            <div class="two-column">
+                <div class="card">
+                    <h3 class="card-title">Morning</h3>
+                    <div class="hierarchy-diagram">vectors
+   &rarr; embeddings
+      &rarr; your database
+         as a vector store</div>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Afternoon</h3>
+                    <div class="hierarchy-diagram">vibe coding
+   &rarr; build an AI tool (MCP)
+      that queries your database
+         in plain English</div>
+                </div>
+            </div>
+            <div class="promise">By 4:00 you'll have built an AI tool that queries a database in plain English &mdash; and understood every piece.</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">&larr; Previous</button>
+        <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">6</span></span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next &rarr;</button>
+    </nav>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 6;
+        const slides = document.querySelectorAll('.slide');
+
+        // BroadcastChannel keeps the speaker-notes second screen in sync.
+        // The channel name MUST match welcome-speaker-notes.html: 'dod-welcome-slides'.
+        const speakerNotesChannel = new BroadcastChannel('dod-welcome-slides');
+
+        function showSlide(n) {
+            currentSlide = Math.max(1, Math.min(n, totalSlides));
+            slides.forEach(s => s.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            // Broadcast the slide change to the speaker-notes window.
+            speakerNotesChannel.postMessage({ slide: currentSlide });
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function openSpeakerNotes() {
+            window.open('welcome-speaker-notes.html', 'speakerNotes',
+                'width=900,height=1000,scrollbars=yes,resizable=yes');
+            // Re-send current slide once the notes window has loaded.
+            setTimeout(() => speakerNotesChannel.postMessage({ slide: currentSlide }), 600);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key >= '1' && e.key <= '9') {
+                const slideNum = parseInt(e.key);
+                if (slideNum <= totalSlides) showSlide(slideNum);
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

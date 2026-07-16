@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modules 4 & 5: MCP & FastMCP</title>
+    <!-- Obney.ai Brand Fonts (only network dependency; degrades to system fonts offline) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2BB8C4;
+            --primary-dark: #229BA5;
+            --primary-light: #A8F0F4;
+            --secondary: #E07850;
+            --success: #7BC47F;
+            --warning: #E0C878;
+            --danger: #D85858;
+            --bg-dark: #1A2E3B;
+            --bg-darker: #142430;
+            --bg-light: #FFF5EB;
+            --text-light: #FFF5EB;
+            --text-dark: #1A2E3B;
+            --text-muted: #6B8A99;
+            --border: #2D4A5A;
+            --code-bg: #142430;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        aside.notes { display: none; }
+
+        .slide {
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 60px 80px 100px 80px;
+            min-height: 100vh;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .slide.title-slide { justify-content: center; align-items: center; text-align: center; }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .subtitle { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 40px; }
+
+        .loop-diagram {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2rem;
+            background: var(--bg-darker);
+            padding: 30px 50px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .loop-step { display: inline-block; padding: 8px 16px; margin: 0 5px; border-radius: 6px; background: var(--bg-dark); }
+        .loop-step.active { background: var(--primary); color: var(--bg-dark); font-weight: 600; }
+        .loop-arrow { color: var(--text-muted); }
+
+        .code-block {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .code-block .keyword { color: #C586C0; }
+        .code-block .string { color: #CE9178; }
+        .code-block .function { color: #DCDCAA; }
+        .code-block .comment { color: #6A9955; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .three-column { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
+
+        .card { background: var(--bg-darker); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+        .card-title { font-size: 1.3rem; font-weight: 600; color: var(--primary); margin-bottom: 16px; }
+
+        .bullet-list { list-style: none; padding-left: 0; }
+        .bullet-list li { padding: 8px 0; padding-left: 24px; position: relative; }
+        .bullet-list li::before { content: "\2022"; color: var(--primary); position: absolute; left: 0; font-weight: bold; }
+
+        .tip-box {
+            background: rgba(43, 184, 196, 0.12);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .tip-icon { font-size: 1.3rem; }
+
+        .hierarchy-diagram {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--bg-darker);
+            padding: 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            line-height: 1.8;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .api-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .api-table th, .api-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .api-table th { background: var(--bg-darker); color: var(--primary); font-weight: 600; }
+        .api-table code { font-family: 'IBM Plex Mono', monospace; background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+        .badge.model { background: rgba(224, 120, 80, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+        .badge.app { background: rgba(43, 184, 196, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+        .badge.user { background: rgba(224, 200, 120, 0.15); color: var(--warning); border: 1px solid var(--warning); }
+
+        .mode-switch { background: rgba(224, 120, 80, 0.15); border: 2px solid var(--secondary); border-radius: 12px; padding: 24px; margin: 8px 0; }
+        .mode-switch-title { color: var(--secondary); font-weight: 700; font-size: 1.3rem; margin-bottom: 16px; }
+
+        .numbered-list { counter-reset: item; list-style: none; padding-left: 0; }
+        .numbered-list li { counter-increment: item; padding: 8px 0; padding-left: 32px; position: relative; }
+        .numbered-list li::before {
+            content: counter(item);
+            position: absolute;
+            left: 0;
+            background: var(--primary);
+            color: var(--bg-dark);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .wow-quote {
+            font-size: 1.6rem;
+            line-height: 1.5;
+            color: var(--primary-light);
+            background: var(--bg-darker);
+            border-left: 4px solid var(--primary);
+            padding: 24px 30px;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+        }
+
+        .pill-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .pill { background: var(--bg-darker); border: 1px solid var(--border); border-radius: 999px; padding: 10px 20px; font-weight: 600; }
+        .pill.ro { border-color: var(--success); color: var(--success); }
+        .pill.no { border-color: var(--danger); color: var(--danger); }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--bg-darker);
+            border-top: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { background: var(--primary-light); }
+        .nav-btn:disabled { background: var(--border); cursor: not-allowed; }
+
+        .notes-btn { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+        .notes-btn:hover { color: var(--primary-light); border-color: var(--primary); background: transparent; }
+
+        .slide-counter { font-family: 'IBM Plex Mono', monospace; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <!-- SLIDE 1: Title -->
+    <style>
+      /* embedded diagram styling (prefixed .dg-* so it can't collide with the deck) */
+      svg.dg{width:100%;max-width:1000px;height:auto;display:block;margin:10px auto}
+      .dg-box{fill:var(--code-bg);stroke:var(--border);stroke-width:2}
+      .dg-lbl{fill:var(--text-light);font:600 20px Figtree,system-ui;text-anchor:middle;dominant-baseline:middle}
+      .dg-sub{fill:var(--text-muted);font:14px Figtree,system-ui;text-anchor:middle;dominant-baseline:middle}
+      .dg-flow{stroke:var(--text-muted);stroke-width:2.5;fill:none;marker-end:url(#dgarrow)}
+      .dg-tag{fill:var(--text-muted);font:13px Figtree,system-ui;text-anchor:middle}
+      .dg-hd{fill:var(--primary);font:700 22px Figtree,system-ui;text-anchor:middle}
+    </style>
+    <div class="slide title-slide active" data-slide="1">
+        <h1 class="main-title">Modules 4 &amp; 5: MCP &amp; FastMCP</h1>
+        <p class="subtitle">Let an AI use your database &mdash; in plain English</p>
+        <div class="loop-diagram">
+            <span class="loop-step">LLM</span>
+            <span class="loop-arrow">&rarr;</span>
+            <span class="loop-step">EMBEDDINGS</span>
+            <span class="loop-arrow">&rarr;</span>
+            <span class="loop-step">VECTOR STORE</span>
+            <span class="loop-arrow">&rarr;</span>
+            <span class="loop-step active">MCP TOOL</span>
+        </div>
+    </div>
+
+    <!-- SLIDE 2: Where We Are -->
+    <div class="slide" data-slide="2">
+        <h2 class="slide-title">Where We Are</h2>
+        <div class="slide-content">
+            <div class="hierarchy-diagram">
+Morning  =  WHAT
+    M1  Vectors &amp; Embeddings         (meaning as numbers)
+    M2  SQL Server 2025 as a VectorStore
+
+Afternoon  =  let an AI USE it
+    M3  Vibe Coding 101               (you just did this)
+    M4  What is MCP &amp; FastMCP         &larr; YOU ARE HERE
+    M5  Build YOUR MCP server         (the big one)
+    M6  Talk to your data</div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>Same data you embedded this morning &mdash; now Claude can search and query it <strong>for</strong> you.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: What is MCP -->
+    <div class="slide" data-slide="3">
+        <h2 class="slide-title">What is MCP?</h2>
+        <div class="slide-content">
+            <div class="two-column">
+                <div class="card">
+                    <h3 class="card-title">USB-C for AI tools</h3>
+                    <p>One standard plug. Any AI app can talk to any tool &mdash; no custom wiring per app.</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Model Context Protocol</h3>
+                    <p>An open protocol that lets a <strong>Client</strong> (Claude Desktop) call <strong>Tools</strong> exposed by an <strong>MCPServer</strong>.</p>
+                </div>
+            </div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128268;</span>
+                <span>Before USB-C, every device had its own cable. MCP is the one connector that fits every AI app <em>and</em> every tool.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: The problem MCP solves -->
+    <div class="slide" data-slide="4">
+        <h2 class="slide-title">The Problem It Solves</h2>
+        <div class="slide-content">
+            <svg class="dg" viewBox="0 0 1120 460" role="img" aria-label="Before vs after MCP">
+              <defs><marker id="dgarrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#6B8A99"/></marker></defs>
+              <text x="270" y="28" class="dg-hd">BEFORE &mdash; tangled &amp; custom</text>
+              <rect class="dg-box" x="60" y="195" width="150" height="70" rx="12"/><text x="135" y="230" class="dg-lbl">AI</text>
+              <rect class="dg-box" x="360" y="65" width="170" height="60" rx="12"/><text x="445" y="95" class="dg-lbl">Calendar</text>
+              <rect class="dg-box" x="360" y="200" width="170" height="60" rx="12"/><text x="445" y="230" class="dg-lbl">Database</text>
+              <rect class="dg-box" x="360" y="335" width="170" height="60" rx="12"/><text x="445" y="365" class="dg-lbl">Slack</text>
+              <path class="dg-flow" d="M210,220 C300,145 300,105 360,95"/><text x="300" y="145" class="dg-tag">custom API</text>
+              <path class="dg-flow" d="M210,230 L360,230"/><text x="300" y="217" class="dg-tag">different API</text>
+              <path class="dg-flow" d="M210,240 C300,315 300,355 360,365"/><text x="300" y="325" class="dg-tag">yet another API</text>
+              <line x1="580" y1="45" x2="580" y2="420" stroke="#2D4A5A" stroke-width="2" stroke-dasharray="6 6"/>
+              <text x="850" y="28" class="dg-hd">AFTER &mdash; one protocol (USB for AI)</text>
+              <rect class="dg-box" x="620" y="195" width="150" height="70" rx="12"/><text x="695" y="230" class="dg-lbl">AI</text>
+              <circle cx="880" cy="230" r="46" fill="#142430" stroke="#2BB8C4" stroke-width="3"/>
+              <text x="880" y="225" class="dg-lbl" style="fill:#2BB8C4">MCP</text><text x="880" y="247" class="dg-sub">one plug</text>
+              <rect class="dg-box" x="960" y="65" width="140" height="60" rx="12"/><text x="1030" y="95" class="dg-lbl">Calendar</text>
+              <rect class="dg-box" x="960" y="200" width="140" height="60" rx="12"/><text x="1030" y="230" class="dg-lbl">Database</text>
+              <rect class="dg-box" x="960" y="335" width="140" height="60" rx="12"/><text x="1030" y="365" class="dg-lbl">Slack</text>
+              <path class="dg-flow" d="M770,230 L832,230"/>
+              <path class="dg-flow" d="M924,210 C945,145 945,115 960,95"/>
+              <path class="dg-flow" d="M926,230 L960,230"/>
+              <path class="dg-flow" d="M924,250 C945,315 945,345 960,365"/>
+            </svg>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>You write <strong>one</strong> MCPServer. Every MCP-capable Client can use it.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: MCP server components -->
+    <div class="slide" data-slide="5">
+        <h2 class="slide-title">What an MCP Server Exposes</h2>
+        <div class="slide-content">
+            <svg class="dg" viewBox="0 0 1120 260" role="img" aria-label="Tools, Resources, Prompts">
+              <rect class="dg-box" x="40" y="30" width="320" height="185" rx="16" style="stroke:#2BB8C4;stroke-width:3"/>
+              <text x="200" y="72" class="dg-lbl" style="fill:#2BB8C4;font-size:24px">Tools</text>
+              <text x="200" y="110" class="dg-sub">functions the AI can CALL</text>
+              <text x="200" y="136" class="dg-sub">run_sql &middot; semantic_search</text>
+              <text x="200" y="184" class="dg-tag">controlled by &rarr; the Model</text>
+              <rect class="dg-box" x="400" y="30" width="320" height="185" rx="16" style="stroke:#7BC47F;stroke-width:3"/>
+              <text x="560" y="72" class="dg-lbl" style="fill:#7BC47F;font-size:24px">Resources</text>
+              <text x="560" y="110" class="dg-sub">read-only data for context</text>
+              <text x="560" y="136" class="dg-sub">a schema &middot; a document</text>
+              <text x="560" y="184" class="dg-tag">controlled by &rarr; the App</text>
+              <rect class="dg-box" x="760" y="30" width="320" height="185" rx="16" style="stroke:#E0C878;stroke-width:3"/>
+              <text x="920" y="72" class="dg-lbl" style="fill:#E0C878;font-size:24px">Prompts</text>
+              <text x="920" y="110" class="dg-sub">reusable prompt templates</text>
+              <text x="920" y="136" class="dg-sub">&ldquo;summarize this&rdquo;</text>
+              <text x="920" y="184" class="dg-tag">controlled by &rarr; the User</text>
+            </svg>
+            <div class="tip-box">
+                <span class="tip-icon">&#127919;</span>
+                <span>Today we build <strong>Tools</strong> &mdash; the actionable, "wow" part. Resources &amp; Prompts: just know they exist.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: A Tool is a function -->
+    <div class="slide" data-slide="6">
+        <h2 class="slide-title">A Tool Is Just a Function</h2>
+        <div class="slide-content">
+            <p>A <strong>Tool</strong> is a function you let the AI call. The docstring + type hints <em>are</em> its contract &mdash; that's what the Model reads to decide when and how to use it.</p>
+            <div class="code-block"><span class="keyword">@mcp</span>.tool
+<span class="keyword">def</span> <span class="function">semantic_search</span>(query: str) -&gt; list:
+    <span class="string">"""Find the Products most similar in meaning to `query`."""</span>
+    <span class="comment"># embed the query, rank Products by VECTOR_DISTANCE</span>
+    ...</div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128172;</span>
+                <span>Write a clear docstring and the AI knows what your Tool does. That's the whole trick.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: Client <-> Server over stdio -->
+    <div class="slide" data-slide="7">
+        <h2 class="slide-title">Client &harr; Server, over stdio</h2>
+        <div class="slide-content">
+            <svg class="dg" viewBox="0 0 1120 300" role="img" aria-label="MCP tool-call round trip">
+              <defs><marker id="dgarrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#6B8A99"/></marker></defs>
+              <rect class="dg-box" x="20" y="105" width="170" height="80" rx="12"/><text x="105" y="137" class="dg-lbl">You</text><text x="105" y="161" class="dg-sub">plain English</text>
+              <rect class="dg-box" x="270" y="105" width="200" height="80" rx="12"/><text x="370" y="137" class="dg-lbl">Claude Desktop</text><text x="370" y="161" class="dg-sub">Host + Client</text>
+              <rect class="dg-box" x="560" y="105" width="220" height="80" rx="12" style="stroke:#2BB8C4;stroke-width:3"/><text x="670" y="133" class="dg-lbl">Your MCP Server</text><text x="670" y="159" class="dg-sub">get_schema &middot; run_sql &middot; semantic_search</text>
+              <rect class="dg-box" x="870" y="105" width="220" height="80" rx="12"/><text x="980" y="133" class="dg-lbl">SQL Server 2025</text><text x="980" y="159" class="dg-sub">VECTOR column</text>
+              <path class="dg-flow" d="M190,145 L268,145"/>
+              <path class="dg-flow" d="M470,145 L558,145"/><text x="514" y="132" class="dg-tag">stdio &middot; &ldquo;Allow?&rdquo;</text>
+              <path class="dg-flow" d="M780,145 L868,145"/><text x="824" y="132" class="dg-tag">SQL</text>
+              <path class="dg-flow" style="stroke-dasharray:6 5" d="M870,172 C790,240 470,240 372,188"/><text x="620" y="255" class="dg-tag">&larr; results flow back the same way</text>
+            </svg>
+            <div class="pill-row">
+                <span class="pill">Local process on your laptop</span>
+                <span class="pill ro">stdio = no network, no ports</span>
+                <span class="pill no">no auth &middot; no cloud</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: M4 Build - add an existing server -->
+    <div class="slide" data-slide="8">
+        <h2 class="slide-title">M4 Build: Feel the Client Side</h2>
+        <div class="slide-content">
+            <div class="mode-switch">
+                <div class="mode-switch-title">&rarr; SWITCH TO CLAUDE DESKTOP</div>
+                <ol class="numbered-list">
+                    <li>Add an existing MCP server to <code>claude_desktop_config.json</code></li>
+                    <li>Fully quit and reopen Claude Desktop</li>
+                    <li>Watch a new <strong>Tool</strong> appear in the app</li>
+                    <li>Use it &mdash; ask Claude a question that makes it call the Tool</li>
+                </ol>
+            </div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>Feel the Client side <em>before</em> you build the server side. Next we make the AI talk to <strong>your</strong> database.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 9: Bridge to M5 -->
+    <div class="slide" data-slide="9">
+        <h2 class="slide-title">Now Build Your Own</h2>
+        <div class="slide-content">
+            <div class="loop-diagram" style="text-align:center;">
+                <span class="loop-step">M4: use someone's server</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step active">M5: build YOUR server over YOUR data</span>
+            </div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128296;</span>
+                <span>You'll <strong>vibe-code</strong> it with Claude Code &mdash; describe each Tool, let Claude write it, test it, move on. A finished reference lives in <code>mcp-server/</code> if you get stuck.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 10: M5 Build - 4 Tools -->
+    <div class="slide" data-slide="10">
+        <h2 class="slide-title">M5: Build Your Server &mdash; 4 Tools</h2>
+        <div class="slide-content">
+            <p>You'll vibe-code a FastMCP server with <strong>four Tools</strong> that let Claude talk to your Catalog.</p>
+            <ul class="bullet-list">
+                <li><code>get_schema</code> &mdash; tells Claude your table's columns so it writes correct SQL.</li>
+                <li><code>run_sql</code> &mdash; runs a read-only <code>SELECT</code> (Claude can look, not touch).</li>
+                <li><code>semantic_search</code> &mdash; finds products by meaning (<code>VECTOR_DISTANCE</code>).</li>
+                <li><code>add_product</code> &mdash; the ONE write tool: Claude adds a product ("AI takes a real action, safely").</li>
+            </ul>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>A finished reference is in <code>mcp-server/</code> if you get stuck &mdash; but try to vibe-code it yourself.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 11: Build It (1 of 2) -->
+    <div class="slide" data-slide="11">
+        <h2 class="slide-title">Build It (1 of 2)</h2>
+        <div class="slide-content">
+            <p>In Claude Code (plan mode on), describe each piece and let it build. Read what it writes; if it errors, paste the error back.</p>
+            <ol class="numbered-list">
+                <li><strong>Scaffold</strong>
+                    <div class="code-block" style="white-space: pre-wrap;">Create a FastMCP server in Python called WorkshopCatalog that runs over stdio.</div>
+                </li>
+                <li><strong>get_schema</strong>
+                    <div class="code-block" style="white-space: pre-wrap;">Add a tool get_schema that returns the columns and types of the Products table so the AI can write correct SQL.</div>
+                </li>
+                <li><strong>run_sql</strong>
+                    <div class="code-block" style="white-space: pre-wrap;">Add a read-only tool run_sql(query) that runs a single SELECT and returns rows &mdash; reject anything that isn't a read-only SELECT, and connect as the workshop_ro login so writes are blocked.</div>
+                </li>
+            </ol>
+            <div class="tip-box">
+                <span class="tip-icon">&#128269;</span>
+                <span><strong>Test each tool the moment you add it</strong> &mdash; in a <em>second</em> terminal, run the MCP Inspector, click <strong>Connect</strong>, and your new tool shows up in the <strong>Tools</strong> tab (more on that in a moment):</span>
+            </div>
+            <div class="code-block">npx @modelcontextprotocol/inspector .venv/bin/python mcp-server/server.py</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 12: Build It (2 of 2) -->
+    <div class="slide" data-slide="12">
+        <h2 class="slide-title">Build It (2 of 2)</h2>
+        <div class="slide-content">
+            <ol class="numbered-list" style="counter-reset: item 3;">
+                <li><strong>semantic_search</strong>
+                    <div class="code-block" style="white-space: pre-wrap;">Add a tool semantic_search(text, top_k=5) that embeds text with all-MiniLM-L6-v2 and returns the top products by VECTOR_DISTANCE cosine over the DescriptionEmbedding column.</div>
+                </li>
+                <li><strong>add_product</strong>
+                    <div class="code-block" style="white-space: pre-wrap;">Add a tool add_product(name, description, category, price) that inserts a product and embeds its description &mdash; the one tool allowed to write.</div>
+                </li>
+            </ol>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>Snag &rarr; read the error &rarr; paste it back to Claude &rarr; fixed. That's the whole loop.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 13: Test Each Tool - MCP Inspector -->
+    <div class="slide" data-slide="13">
+        <h2 class="slide-title">Test Each Tool &mdash; MCP Inspector</h2>
+        <div class="slide-content">
+            <div class="code-block">npx @modelcontextprotocol/inspector .venv/bin/python mcp-server/server.py</div>
+            <ol class="numbered-list">
+                <li>Click <strong>Connect</strong>.</li>
+                <li>Open the <strong>Tools</strong> tab.</li>
+                <li>Each tool shows its <strong>description + parameters</strong>.</li>
+                <li>The fields are <strong>pre-filled with a real example</strong>.</li>
+                <li>Click <strong>Run</strong> &mdash; see live results.</li>
+            </ol>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>No AI needed yet &mdash; you're calling your tool directly. That's how easy testing is.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 14: Wire into Claude Desktop -->
+    <div class="slide" data-slide="14">
+        <h2 class="slide-title">Wire It Into Claude Desktop</h2>
+        <div class="slide-content">
+            <ol class="numbered-list">
+                <li>Add the server to <code>claude_desktop_config.json</code> &mdash; <code>command</code> = your <code>.venv</code> Python, <code>args</code> = the full path to <code>server.py</code> (snippet in <code>mcp-server/README.md</code>).</li>
+                <li><strong>Fully quit and reopen</strong> Claude Desktop (&#8984;Q &mdash; not just close the window).</li>
+                <li>Your Tools appear near the message box.</li>
+            </ol>
+            <div class="code-block">Mac      ~/Library/Application Support/Claude/claude_desktop_config.json
+Windows  %APPDATA%\Claude\claude_desktop_config.json</div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>When Claude wants to use a tool it asks "Allow?" &mdash; you stay in control.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 15: M5 Checklist -->
+    <div class="slide" data-slide="15">
+        <h2 class="slide-title">M5 Checklist &mdash; Where Am I?</h2>
+        <div class="slide-content">
+            <ul class="bullet-list">
+                <li>&#9744; Server scaffolds &amp; runs</li>
+                <li>&#9744; <code>get_schema</code> returns the columns</li>
+                <li>&#9744; <code>run_sql</code> returns rows AND rejects writes</li>
+                <li>&#9744; <code>semantic_search</code> returns ranked products</li>
+                <li>&#9744; <code>add_product</code> adds a row</li>
+                <li>&#9744; all four tested in MCP Inspector</li>
+                <li>&#9744; wired into Claude Desktop</li>
+            </ul>
+            <div class="tip-box">
+                <span class="tip-icon">&#9989;</span>
+                <span>All checked? You've built an AI-ready database tool. Next: <strong>talk to it.</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 16: The Wow query -->
+    <div class="slide" data-slide="16">
+        <h2 class="slide-title">The Wow Query</h2>
+        <div class="slide-content">
+            <div class="wow-quote">
+                "Which products are most like a rugged waterproof jacket, and what's the average price of the top 5?"
+            </div>
+            <div class="hierarchy-diagram">
+Claude reads your Tools, then:
+   1. calls  semantic_search("rugged waterproof jacket")
+   2. calls  run_sql("SELECT AVG(Price) ... top 5")
+   3. answers you in plain English</div>
+        </div>
+    </div>
+
+    <!-- SLIDE 17: No auth, no cloud -->
+    <div class="slide" data-slide="17">
+        <h2 class="slide-title">No Auth, No Cloud</h2>
+        <div class="slide-content">
+            <div class="three-column">
+                <div class="card">
+                    <h3 class="card-title">Local</h3>
+                    <p>Client launches your server over <strong>stdio</strong>. No ports, no network calls to run it.</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Read-only</h3>
+                    <p><code>run_sql</code> takes SELECT only, backed by the <code>workshop_ro</code> login. The AI can look, not touch.</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Yours</h3>
+                    <p>Your machine, your database, your Tools. Nothing leaves the laptop to make it work.</p>
+                </div>
+            </div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128274;</span>
+                <span>Simple on purpose. This is the safest possible on-ramp to "AI takes real actions."</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 18: Summary + keep going -->
+    <div class="slide" data-slide="18">
+        <h2 class="slide-title">The Whole Mental Model</h2>
+        <div class="slide-content">
+            <div class="loop-diagram" style="text-align:center;">
+                <span class="loop-step">LLM</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">Embeddings</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">VectorStore</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">MCP Tool</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step active">the AI uses it</span>
+            </div>
+            <div class="two-column">
+                <div class="card">
+                    <h3 class="card-title">You walked out with</h3>
+                    <ul class="bullet-list">
+                        <li>A clear mental model of modern AI</li>
+                        <li>Your first working MCP Tool</li>
+                        <li>An AI that queries your DB in plain English</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Keep going</h3>
+                    <ul class="bullet-list">
+                        <li><strong>aka.ms/mcp-for-beginners</strong></li>
+                        <li><strong>gofastmcp.com</strong></li>
+                        <li>Pamela Fox's Reactor series (Session 1)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">&larr; Previous</button>
+        <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">18</span></span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next &rarr;</button>
+    </nav>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 18;
+        const slides = document.querySelectorAll('.slide');
+
+        // BroadcastChannel keeps the speaker-notes second screen in sync.
+        // The channel name MUST match speaker-notes.html: 'dod-mcp-slides'.
+        const speakerNotesChannel = new BroadcastChannel('dod-mcp-slides');
+
+        function showSlide(n) {
+            currentSlide = Math.max(1, Math.min(n, totalSlides));
+            slides.forEach(s => s.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            // Broadcast the slide change to the speaker-notes window.
+            speakerNotesChannel.postMessage({ slide: currentSlide });
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function openSpeakerNotes() {
+            window.open('speaker-notes.html', 'speakerNotes',
+                'width=900,height=1000,scrollbars=yes,resizable=yes');
+            // Re-send current slide once the notes window has loaded.
+            setTimeout(() => speakerNotesChannel.postMessage({ slide: currentSlide }), 600);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key >= '1' && e.key <= '9') {
+                const slideNum = parseInt(e.key);
+                if (slideNum <= totalSlides) showSlide(slideNum);
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

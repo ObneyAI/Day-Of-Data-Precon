@@ -11,8 +11,10 @@
 # 2) re-include exactly the student-facing files
 !/.gitignore
 !/README.md
+!/SETUP.md
 !/db/
 !/modules/
+!/lesson-slides/
 
 # 3) inside the allowed folders, still drop generated / env / caches
 db/workshop_catalog.sqlite

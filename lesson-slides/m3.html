@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 3 — Vibe Coding 101</title>
+    <!-- Obney.ai Brand Fonts (only network dependency; degrades to system fonts offline) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2BB8C4;
+            --primary-dark: #229BA5;
+            --primary-light: #A8F0F4;
+            --secondary: #E07850;
+            --success: #7BC47F;
+            --warning: #E0C878;
+            --danger: #D85858;
+            --bg-dark: #1A2E3B;
+            --bg-darker: #142430;
+            --bg-light: #FFF5EB;
+            --text-light: #FFF5EB;
+            --text-dark: #1A2E3B;
+            --text-muted: #6B8A99;
+            --border: #2D4A5A;
+            --code-bg: #142430;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        aside.notes { display: none; }
+
+        .slide {
+            display: none;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 60px 80px 100px 80px;
+            min-height: 100vh;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .slide.title-slide { justify-content: center; align-items: center; text-align: center; }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .subtitle { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 40px; }
+
+        .presenter { font-size: 1.2rem; color: var(--primary-light); font-weight: 600; margin-bottom: 40px; }
+
+        .arrival-line {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.05rem;
+            color: var(--text-light);
+            background: var(--bg-darker);
+            padding: 18px 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .loop-diagram {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.2rem;
+            background: var(--bg-darker);
+            padding: 30px 50px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .loop-step { display: inline-block; padding: 8px 16px; margin: 0 5px; border-radius: 6px; background: var(--bg-dark); }
+        .loop-step.active { background: var(--primary); color: var(--bg-dark); font-weight: 600; }
+        .loop-arrow { color: var(--text-muted); }
+
+        .code-block {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.5;
+        }
+
+        .code-block .keyword { color: #C586C0; }
+        .code-block .string { color: #CE9178; }
+        .code-block .function { color: #DCDCAA; }
+        .code-block .comment { color: #6A9955; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .three-column { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
+
+        .card { background: var(--bg-darker); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+        .card-title { font-size: 1.3rem; font-weight: 600; color: var(--primary); margin-bottom: 16px; }
+
+        .bullet-list { list-style: none; padding-left: 0; }
+        .bullet-list li { padding: 8px 0; padding-left: 24px; position: relative; }
+        .bullet-list li::before { content: "\2022"; color: var(--primary); position: absolute; left: 0; font-weight: bold; }
+
+        .tip-box {
+            background: rgba(43, 184, 196, 0.12);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .tip-icon { font-size: 1.3rem; }
+
+        .hierarchy-diagram {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--bg-darker);
+            padding: 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            line-height: 1.8;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .api-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .api-table th, .api-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .api-table th { background: var(--bg-darker); color: var(--primary); font-weight: 600; }
+        .api-table code { font-family: 'IBM Plex Mono', monospace; background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+        .api-table .ok { color: var(--success); font-family: 'IBM Plex Mono', monospace; }
+
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+        .badge.model { background: rgba(224, 120, 80, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+        .badge.app { background: rgba(43, 184, 196, 0.15); color: var(--primary); border: 1px solid var(--primary); }
+        .badge.user { background: rgba(224, 200, 120, 0.15); color: var(--warning); border: 1px solid var(--warning); }
+
+        .mode-switch { background: rgba(224, 120, 80, 0.15); border: 2px solid var(--secondary); border-radius: 12px; padding: 24px; margin: 8px 0; }
+        .mode-switch-title { color: var(--secondary); font-weight: 700; font-size: 1.3rem; margin-bottom: 16px; }
+
+        .numbered-list { counter-reset: item; list-style: none; padding-left: 0; }
+        .numbered-list li { counter-increment: item; padding: 10px 0; padding-left: 40px; position: relative; }
+        .numbered-list li::before {
+            content: counter(item);
+            position: absolute;
+            left: 0;
+            top: 8px;
+            background: var(--primary);
+            color: var(--bg-dark);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .numbered-list .code-block { margin-top: 10px; white-space: pre-wrap; word-break: break-word; }
+
+        .wow-quote {
+            font-size: 1.6rem;
+            line-height: 1.5;
+            color: var(--primary-light);
+            background: var(--bg-darker);
+            border-left: 4px solid var(--primary);
+            padding: 24px 30px;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+        }
+
+        /* Big fill-in-the-blank visual for "what is AI" */
+        .fill-blank {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 2.4rem;
+            font-weight: 600;
+            text-align: center;
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 50px 30px;
+            line-height: 1.6;
+        }
+        .fill-blank .blank { color: var(--warning); border-bottom: 3px dashed var(--warning); padding: 0 20px; }
+        .fill-blank .answer { color: var(--success); font-weight: 700; }
+        .fill-blank .arrow { color: var(--text-muted); margin: 0 18px; }
+
+        /* Big vector visual for "how does it understand you" */
+        .vector-visual {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            background: var(--bg-darker);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px 30px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .vector-visual .phrase { color: var(--primary-light); }
+        .vector-visual .arrow { color: var(--text-muted); margin: 0 16px; }
+        .vector-visual .nums { color: var(--warning); }
+        .vector-visual .caption { display: block; margin-top: 14px; font-size: 0.95rem; color: var(--text-muted); font-weight: 400; }
+
+        .bridge-line { font-size: 1.5rem; font-weight: 700; color: var(--secondary); text-align: center; margin-top: 8px; }
+
+        .live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(224, 120, 80, 0.15);
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            border-radius: 999px;
+            padding: 12px 24px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .lobster-box {
+            background: rgba(224, 120, 80, 0.12);
+            border: 1px dashed var(--secondary);
+            border-radius: 12px;
+            padding: 20px 24px;
+        }
+        .lobster-box .lobster-title { color: var(--secondary); font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; }
+
+        .pill-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .pill { background: var(--bg-darker); border: 1px solid var(--border); border-radius: 999px; padding: 10px 20px; font-weight: 600; }
+        .pill.ro { border-color: var(--success); color: var(--success); }
+        .pill.no { border-color: var(--danger); color: var(--danger); }
+
+        .promise {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--primary-light);
+            background: var(--bg-darker);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 30px 36px;
+            text-align: center;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: var(--bg-darker);
+            border-top: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { background: var(--primary-light); }
+        .nav-btn:disabled { background: var(--border); cursor: not-allowed; }
+
+        .notes-btn { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+        .notes-btn:hover { color: var(--primary-light); border-color: var(--primary); background: transparent; }
+
+        .slide-counter { font-family: 'IBM Plex Mono', monospace; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide title-slide active" data-slide="1">
+        <h1 class="main-title">Module 3 &mdash; Vibe Coding 101</h1>
+        <p class="subtitle">Describe it. Let the AI build it. Run &rarr; break &rarr; fix.</p>
+        <p class="presenter">Daryl Roberts &middot; obney.ai</p>
+    </div>
+
+    <!-- SLIDE 2: What is vibe coding? -->
+    <div class="slide" data-slide="2">
+        <h2 class="slide-title">What is vibe coding?</h2>
+        <div class="slide-content">
+            <div class="wow-quote">Building software by describing what you want in plain English. You stay the architect; the AI is a very fast junior who never sleeps.</div>
+            <div class="tip-box">
+                <span class="tip-icon">&#9888;&#65039;</span>
+                <span>Bust the myth: it's <strong>NOT</strong> "generate code and ignore it." You read what comes back &mdash; the code is still the battleground.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 3: Model vs. agent -->
+    <div class="slide" data-slide="3">
+        <h2 class="slide-title">Model vs. agent</h2>
+        <div class="slide-content">
+            <div class="two-column">
+                <div class="card">
+                    <h3 class="card-title">Claude = the brain</h3>
+                    <p>It thinks and talks. That's <strong>chatting.</strong></p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Claude Code = the brain with hands</h3>
+                    <p>It edits files and runs things on your machine. That's <strong>vibe coding.</strong></p>
+                </div>
+            </div>
+            <div class="mode-switch">
+                <div class="mode-switch-title">Plan mode = look before you leap</div>
+                <p>The AI proposes a plan, you approve it, <strong>THEN</strong> it changes anything. Course-correcting a plan is cheap; undoing a mess is expensive.</p>
+                <p style="margin-top:12px;color:var(--text-muted);">Mechanic: <strong>Shift+Tab</strong> cycles modes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 4: The loop that never fails you -->
+    <div class="slide" data-slide="4">
+        <h2 class="slide-title">The loop that never fails you</h2>
+        <div class="slide-content">
+            <div class="loop-diagram" style="text-align:center;">
+                <span class="loop-step">Describe</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">Run</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">Observe (it broke)</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step active">Fix</span>
+            </div>
+            <div class="wow-quote">You'll hit a snag. The error tells you the fix. You paste it back. That's the whole game.</div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>Breaking things isn't failure &mdash; it's the <strong>data</strong> that tells the AI what to fix.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 5: Keep the AI sharp (the smart zone) -->
+    <div class="slide" data-slide="5">
+        <h2 class="slide-title">Keep the AI sharp (the smart zone)</h2>
+        <div class="slide-content">
+            <div class="wow-quote">AI gets worse as its memory fills up &mdash; it's the guy from Memento, it forgets.</div>
+            <ul class="bullet-list">
+                <li>Keep tasks <strong>small</strong>.</li>
+                <li>Start <strong>fresh</strong> often.</li>
+                <li>A clean start is its <strong>smartest</strong> state.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SLIDE 6: Build it: King Daryl -->
+    <div class="slide" data-slide="6">
+        <h2 class="slide-title">Build it: "King Daryl"</h2>
+        <div class="slide-content">
+            <ol class="numbered-list">
+                <li>Open Claude Code in a fresh folder &mdash; then turn <strong>plan mode ON</strong> (Shift+Tab):
+                    <div class="code-block">claude</div>
+                </li>
+                <li>Ask it, in your own words:
+                    <div class="code-block">Build a Chrome browser extension that replaces every "Daryl" on the page with "King Daryl". Give me the files and tell me how to load it.</div>
+                </li>
+                <li>Load it: Chrome &rarr; Extensions &rarr; Developer mode &rarr; Load unpacked &rarr; pick the folder.</li>
+                <li>Visit any page with "Daryl" and watch it work.</li>
+            </ol>
+            <div class="tip-box">
+                <span class="tip-icon">&#128081;</span>
+                <span>A finished version exists &mdash; you'll see it after you build yours. The struggle-then-fix <em>is</em> the lesson.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 7: Break it on purpose -->
+    <div class="slide" data-slide="7">
+        <h2 class="slide-title">Break it on purpose</h2>
+        <div class="slide-content">
+            <p>This is the part everyone fears. Do it anyway:</p>
+            <ol class="numbered-list">
+                <li>Ask for a change that might break it &mdash; e.g. also turn "SQL" into "SQL &#128081;".</li>
+                <li>Hit the error.</li>
+                <li>Paste it back.</li>
+                <li>Watch Claude fix it.</li>
+            </ol>
+            <div class="loop-diagram" style="text-align:center;">
+                <span class="loop-step">Describe</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">Run</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">Observe</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step active">Fix</span>
+            </div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>Name the loop as you feel it: <strong>Describe &rarr; Run &rarr; Observe &rarr; Fix.</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDE 8: A peek at the pro workflow -->
+    <div class="slide" data-slide="8">
+        <h2 class="slide-title">A peek at the pro workflow</h2>
+        <div class="slide-content">
+            <p>For bigger projects, pros wrap this in a discipline:</p>
+            <div class="loop-diagram" style="text-align:center;">
+                <span class="loop-step">grill</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">PRD</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">issues (tracer-bullet slices)</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step">build</span>
+                <span class="loop-arrow">&rarr;</span>
+                <span class="loop-step active">QA</span>
+            </div>
+            <div class="wow-quote">Humans own the alignment; the agent does the work. You'll feel a light version this afternoon in M5.</div>
+            <div class="tip-box">
+                <span class="tip-icon">&#128161;</span>
+                <span>Learn it later &mdash; the skills are at <code>github.com/mattpocock/skills</code>. Don't drill it now.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">&larr; Previous</button>
+        <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">8</span></span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next &rarr;</button>
+    </nav>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 8;
+        const slides = document.querySelectorAll('.slide');
+
+        // BroadcastChannel keeps the speaker-notes second screen in sync.
+        // The channel name MUST match m3-speaker-notes.html: 'dod-m3-slides'.
+        const speakerNotesChannel = new BroadcastChannel('dod-m3-slides');
+
+        function showSlide(n) {
+            currentSlide = Math.max(1, Math.min(n, totalSlides));
+            slides.forEach(s => s.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            // Broadcast the slide change to the speaker-notes window.
+            speakerNotesChannel.postMessage({ slide: currentSlide });
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function openSpeakerNotes() {
+            window.open('m3-speaker-notes.html', 'speakerNotes',
+                'width=900,height=1000,scrollbars=yes,resizable=yes');
+            // Re-send current slide once the notes window has loaded.
+            setTimeout(() => speakerNotesChannel.postMessage({ slide: currentSlide }), 600);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key >= '1' && e.key <= '9') {
+                const slideNum = parseInt(e.key);
+                if (slideNum <= totalSlides) showSlide(slideNum);
+            }
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
