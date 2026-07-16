@@ -403,12 +403,20 @@ Afternoon  =  let an AI USE it
             <div class="mode-switch">
                 <div class="mode-switch-title">&rarr; SWITCH TO CLAUDE DESKTOP</div>
                 <ol class="numbered-list">
-                    <li>Add an existing MCP server to <code>claude_desktop_config.json</code></li>
+                    <li>Add a ready-made MCP server (the official <strong>filesystem</strong> server) to <code>claude_desktop_config.json</code> &mdash; snippet below</li>
                     <li>Fully quit and reopen Claude Desktop</li>
                     <li>Watch a new <strong>Tool</strong> appear in the app</li>
                     <li>Use it &mdash; ask Claude a question that makes it call the Tool</li>
                 </ol>
             </div>
+            <div class="code-block" style="white-space: pre;">{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "REPLACE-WITH-A-FOLDER-LIKE-YOUR-DESKTOP"]
+    }
+  }
+}</div>
             <div class="tip-box">
                 <span class="tip-icon">&#128161;</span>
                 <span>Feel the Client side <em>before</em> you build the server side. Next we make the AI talk to <strong>your</strong> database.</span>
@@ -472,9 +480,9 @@ Afternoon  =  let an AI USE it
             </div>
             <div class="tip-box">
                 <span class="tip-icon">&#128269;</span>
-                <span><strong>Test each tool the moment you add it</strong> &mdash; in a <em>second</em> terminal, run the MCP Inspector, click <strong>Connect</strong>, and your new tool shows up in the <strong>Tools</strong> tab (more on that in a moment):</span>
+                <span><strong>Test each tool the moment you add it</strong> &mdash; in a <em>second</em> terminal (in your repo folder, with your <code>.venv</code> active), run the MCP Inspector, click <strong>Connect</strong>, and your new tool shows up in the <strong>Tools</strong> tab (more on that in a moment):</span>
             </div>
-            <div class="code-block">npx @modelcontextprotocol/inspector .venv/bin/python mcp-server/server.py</div>
+            <div class="code-block">npx @modelcontextprotocol/inspector python mcp-server/server.py</div>
         </div>
     </div>
 
@@ -505,7 +513,7 @@ Afternoon  =  let an AI USE it
     <div class="slide" data-slide="13">
         <h2 class="slide-title">Test Each Tool &mdash; MCP Inspector</h2>
         <div class="slide-content">
-            <div class="code-block">npx @modelcontextprotocol/inspector .venv/bin/python mcp-server/server.py</div>
+            <div class="code-block">npx @modelcontextprotocol/inspector python mcp-server/server.py</div>
             <ol class="numbered-list">
                 <li>Click <strong>Connect</strong>.</li>
                 <li>Open the <strong>Tools</strong> tab.</li>
@@ -539,6 +547,7 @@ Windows  %APPDATA%\Claude\claude_desktop_config.json</div>
     }
   }
 }</div>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: -4px;">Replace <code>/full/path/to/</code> with your real paths &mdash; run <code>pwd</code> in your repo folder to get them (and <code>which python</code> with your <code>.venv</code> active).</p>
             <div class="tip-box">
                 <span class="tip-icon">&#128161;</span>
                 <span>When Claude wants to use a tool it asks "Allow?" &mdash; you stay in control.</span>
@@ -592,7 +601,7 @@ Claude reads your Tools, then:
                 </div>
                 <div class="card">
                     <h3 class="card-title">Read-only</h3>
-                    <p><code>run_sql</code> takes SELECT only, backed by the <code>workshop_ro</code> login. The AI can look, not touch.</p>
+                    <p><code>run_sql</code> takes SELECT only &mdash; backed by the <code>workshop_ro</code> login on SQL Server, or a Python SELECT-check on the SQLite backup. The AI can look, not touch.</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Yours</h3>
