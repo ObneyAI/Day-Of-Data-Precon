@@ -15,6 +15,10 @@
 !/db/
 !/modules/
 !/lesson-slides/
+# King-Daryl: publish ONLY the test fixture, keep the instructor reference private
+!/king-daryl/
+king-daryl/*
+!/king-daryl/test.html
 
 # 3) inside the allowed folders, still drop generated / env / caches
 db/workshop_catalog.sqlite

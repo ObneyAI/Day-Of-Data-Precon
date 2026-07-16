@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>King Daryl — Test Page 👑</title>
+<style>
+  body { font: 17px/1.7 system-ui, -apple-system, "Segoe UI", sans-serif;
+         max-width: 680px; margin: 2.5rem auto; padding: 0 1.2rem; color: #1a2e3b; }
+  h1 { font-size: 2rem; }
+  h2 { margin-top: 2.2rem; font-size: 1.2rem; color: #229ba5; }
+  .callout { background: #fff6e0; border: 1px solid #e0c878; border-radius: 10px;
+             padding: 14px 18px; margin: 18px 0; }
+  .callout b { color: #a86b00; }
+  .test { background: #f2fbfc; border-left: 4px solid #2bb8c4; border-radius: 0 10px 10px 0;
+          padding: 14px 18px; margin: 16px 0; }
+  .bonus { background: #f6f6f6; border: 1px dashed #b0b0b0; border-radius: 10px;
+           padding: 14px 18px; margin: 12px 0; }
+  code { background: #eef3f5; padding: 2px 6px; border-radius: 4px; font-size: .9em; }
+  button { font: inherit; padding: .5rem 1rem; margin: .3rem 0; cursor: pointer;
+           border: 1px solid #2bb8c4; background: #2bb8c4; color: #fff; border-radius: 8px; }
+  input { font: inherit; padding: .45rem .6rem; width: 100%; box-sizing: border-box; }
+  footer { margin-top: 2.5rem; color: #6b8a99; font-size: .9rem; }
+</style>
+</head>
+<body>
+
+  <h1>King Daryl — Test Page 👑</h1>
+  <p>Built your extension? <b>Load it, then refresh this page.</b> If it works, every plain
+     <em>Daryl</em> below turns into <em>King Daryl</em>. 🎉</p>
+
+  <div class="callout">
+    <b>Nothing happened?</b> The first time only, your browser blocks extensions from local files.
+    Go to <code>chrome://extensions</code> (or <code>edge://extensions</code>) → open <b>Details</b> on your
+    extension → turn on <b>“Allow access to file URLs”</b> → come back and <b>refresh</b> this page.
+  </div>
+
+  <div class="test">
+    <h2>The main test</h2>
+    <p>Say hello to Daryl. Daryl teaches AI to people who don’t write code. When Daryl runs a workshop,
+       Daryl keeps it fun. Three cheers for Daryl!</p>
+    <p>If all four of those <em>Daryl</em>s are now crowned, your extension works. Nice. 🙌</p>
+  </div>
+
+  <h2>Bonus — want to level up?</h2>
+  <p>A simple version might not handle everything below — and that’s totally fine. If you want to push it
+     further, look at what happened, then <b>paste what you see back to Claude and ask it to fix that case.</b>
+     That’s the whole vibe-coding loop: run → notice → fix.</p>
+
+  <div class="bonus">
+    <p><b>1. Already royal:</b> This line already says King Daryl. Did your extension leave it alone,
+       or did it become “King King Daryl”?</p>
+    <p><b>2. Type it yourself:</b> <input placeholder="Type Daryl here — should a text box get crowned?"></p>
+    <p><b>3. Part of a word:</b> The made-up word “Darylize” contains d-a-r-y-l. Should that change? (Most say no.)</p>
+    <p><b>4. Added later:</b> <button id="add">Add a new line that mentions Daryl</button></p>
+    <div id="live"></div>
+    <p style="color:#6b8a99;font-size:.9rem">(#4 checks whether your extension also crowns text that appears
+       <em>after</em> the page loads — an advanced touch.)</p>
+  </div>
+
+  <footer>This page is just a fixture with the word “Daryl” sprinkled around so you can see your extension
+    work. It’s not the answer — you built that part yourself. 👑</footer>
+
+  <script>
+    let n = 0;
+    document.getElementById("add").addEventListener("click", function () {
+      var p = document.createElement("p");
+      p.textContent = "Line " + (++n) + ": Daryl just showed up dynamically.";
+      document.getElementById("live").appendChild(p);
+    });
+  </script>
+</body>
+</html>
