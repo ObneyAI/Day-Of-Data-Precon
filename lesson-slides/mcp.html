@@ -427,7 +427,7 @@ Afternoon  =  let an AI USE it
             </div>
             <div class="tip-box">
                 <span class="tip-icon">&#128296;</span>
-                <span>You'll <strong>vibe-code</strong> it with Claude Code &mdash; describe each Tool, let Claude write it, test it, move on. A finished reference lives in <code>mcp-server/</code> if you get stuck.</span>
+                <span>You'll <strong>vibe-code</strong> it with Claude Code &mdash; describe each Tool, let Claude write it, test it, move on. Stuck? Read the error, paste it back to Claude, or raise your hand.</span>
             </div>
         </div>
     </div>
@@ -445,7 +445,7 @@ Afternoon  =  let an AI USE it
             </ul>
             <div class="tip-box">
                 <span class="tip-icon">&#128161;</span>
-                <span>A finished reference is in <code>mcp-server/</code> if you get stuck &mdash; but try to vibe-code it yourself.</span>
+                <span>Add them one at a time and test each as you go &mdash; vibe-code it yourself, and raise your hand if you get stuck.</span>
             </div>
         </div>
     </div>
@@ -457,7 +457,7 @@ Afternoon  =  let an AI USE it
             <p>In Claude Code (plan mode on), describe each piece and let it build. Read what it writes; if it errors, paste the error back.</p>
             <ol class="numbered-list">
                 <li><strong>Scaffold</strong>
-                    <div class="code-block" style="white-space: pre-wrap;">Create a FastMCP server in Python called WorkshopCatalog that runs over stdio.</div>
+                    <div class="code-block" style="white-space: pre-wrap;">Create a FastMCP server in Python at mcp-server/server.py called WorkshopCatalog that runs over stdio.</div>
                 </li>
                 <li><strong>get_schema</strong>
                     <div class="code-block" style="white-space: pre-wrap;">Add a tool get_schema that returns the columns and types of the Products table so the AI can write correct SQL.</div>
@@ -466,6 +466,10 @@ Afternoon  =  let an AI USE it
                     <div class="code-block" style="white-space: pre-wrap;">Add a read-only tool run_sql(query) that runs a single SELECT and returns rows &mdash; reject anything that isn't a read-only SELECT, and connect as the workshop_ro login so writes are blocked.</div>
                 </li>
             </ol>
+            <div class="tip-box" style="border-color: var(--secondary);">
+                <span class="tip-icon">&#128374;</span>
+                <span><strong>On the SQLite backup:</strong> your server connects to <code>db/workshop_catalog.sqlite</code> and there's no <code>workshop_ro</code> login &mdash; tell Claude to make <code>run_sql</code> reject anything that isn't a <code>SELECT</code> in Python instead.</span>
+            </div>
             <div class="tip-box">
                 <span class="tip-icon">&#128269;</span>
                 <span><strong>Test each tool the moment you add it</strong> &mdash; in a <em>second</em> terminal, run the MCP Inspector, click <strong>Connect</strong>, and your new tool shows up in the <strong>Tools</strong> tab (more on that in a moment):</span>
@@ -486,6 +490,10 @@ Afternoon  =  let an AI USE it
                     <div class="code-block" style="white-space: pre-wrap;">Add a tool add_product(name, description, category, price) that inserts a product and embeds its description &mdash; the one tool allowed to write.</div>
                 </li>
             </ol>
+            <div class="tip-box" style="border-color: var(--secondary);">
+                <span class="tip-icon">&#128374;</span>
+                <span><strong>On the SQLite backup:</strong> SQLite has no <code>VECTOR_DISTANCE</code> &mdash; tell Claude to rank in Python with the <code>cosine_distance</code> helper in <code>db/embeddings.py</code> over the stored JSON embeddings. Same ranking as SQL Server.</span>
+            </div>
             <div class="tip-box">
                 <span class="tip-icon">&#128161;</span>
                 <span>Snag &rarr; read the error &rarr; paste it back to Claude &rarr; fixed. That's the whole loop.</span>
@@ -517,12 +525,20 @@ Afternoon  =  let an AI USE it
         <h2 class="slide-title">Wire It Into Claude Desktop</h2>
         <div class="slide-content">
             <ol class="numbered-list">
-                <li>Add the server to <code>claude_desktop_config.json</code> &mdash; <code>command</code> = your <code>.venv</code> Python, <code>args</code> = the full path to <code>server.py</code> (snippet in <code>mcp-server/README.md</code>).</li>
+                <li>Add the server to <code>claude_desktop_config.json</code> &mdash; <code>command</code> = your <code>.venv</code> Python, <code>args</code> = the full path to your <code>server.py</code> (use the exact snippet below).</li>
                 <li><strong>Fully quit and reopen</strong> Claude Desktop (&#8984;Q &mdash; not just close the window).</li>
                 <li>Your Tools appear near the message box.</li>
             </ol>
             <div class="code-block">Mac      ~/Library/Application Support/Claude/claude_desktop_config.json
 Windows  %APPDATA%\Claude\claude_desktop_config.json</div>
+            <div class="code-block" style="white-space: pre;">{
+  "mcpServers": {
+    "WorkshopCatalog": {
+      "command": "/full/path/to/.venv/bin/python",
+      "args": ["/full/path/to/mcp-server/server.py"]
+    }
+  }
+}</div>
             <div class="tip-box">
                 <span class="tip-icon">&#128161;</span>
                 <span>When Claude wants to use a tool it asks "Allow?" &mdash; you stay in control.</span>

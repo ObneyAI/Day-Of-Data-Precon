@@ -22,12 +22,22 @@ python -c "import fastmcp, mssql_python, sentence_transformers; print('ready')"
 Didn't finish the pre-work? The full step-by-step install guide is in **[`SETUP.md`](SETUP.md)**, and there's a no-Docker backup so nobody's stuck.
 
 ## 2. Load your catalog (once, in a terminal)
+Pick the **one** path that matches your setup:
+
+**Path A — Docker + SQL Server** (the main path):
 ```bash
 python db/setup_catalog.py           # create WorkshopCatalog + 70 sample Products
 python db/populate_catalog.py        # embed each product description into the VECTOR column
 python db/create_readonly_login.py   # create the read-only DB login you'll use in Module 5
 ```
-> **No Docker?** Instead run `python db/setup_sqlite.py` and set `WORKSHOP_DB=sqlite`. Same results, no container.
+
+**Path B — No Docker? The SQLite backup** — same data, same results, no container:
+```bash
+python db/setup_sqlite.py            # build the local catalog file (db/workshop_catalog.sqlite)
+export WORKSHOP_DB=sqlite            # Mac/Linux   ·   Windows: set WORKSHOP_DB=sqlite
+```
+> On Path B, keep `WORKSHOP_DB=sqlite` set in **every** terminal and notebook you use for the rest of the day — that's
+> the switch that points the notebooks and your MCP server at the SQLite file instead of SQL Server.
 
 ## 3. Follow along
 📊 **The lesson slides are in [`lesson-slides/`](lesson-slides/)** — open `welcome.html`, `m3.html`, and `mcp.html`

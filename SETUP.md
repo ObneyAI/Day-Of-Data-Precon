@@ -11,6 +11,8 @@ Welcome! Please set up your laptop **before Friday** so we spend the day buildin
   screenshot** — we'll help, and there's a no-Docker backup so **you'll be able to do everything on Friday regardless.**
 - 📦 **The workshop files** (notebooks + setup scripts) live in a public GitHub repo — you'll grab them with one command
   Friday morning (see step 9), or early if you like. Today is mainly installing the tools.
+- 🌐 **A Chrome or Edge browser** — one afternoon exercise loads a browser extension, which Safari can't do. Most laptops
+  already have one; Safari-only Mac users, grab **Chrome** (google.com/chrome).
 
 ---
 
@@ -131,7 +133,7 @@ When a step says "run this," you **copy the line, paste it into that window, and
    ```
    python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2'); from staticvectors import StaticVectors; StaticVectors('neuml/word2vec'); print('models ready')"
    ```
-   You should see **`models ready`**.
+   You should see **`models ready`**. *(A yellow "HF_TOKEN" / HuggingFace warning along the way is normal — ignore it.)*
 
 ### 9) Get the workshop files *(quick — you can also do this Friday morning with us)*
 Everything we build from lives in one public repo: **github.com/ObneyAI/Day-Of-Data-Precon**. Grab it whichever way is easier:
