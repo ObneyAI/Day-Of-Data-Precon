@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "King Daryl (instructor reference)",
+  "version": "1.0",
+  "description": "Crowns every 'Daryl' on any page into '👑 King Daryl' — the fancier reference version for the vibe-coding reveal.",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "run_at": "document_idle",
+      "js": ["content.js"]
+    }
+  ]
+}

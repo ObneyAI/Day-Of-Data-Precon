@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>King Daryl — test page</title>
+<style>body{font:16px/1.6 system-ui;max-width:640px;margin:3rem auto;padding:0 1rem}
+button{font:inherit;padding:.5rem 1rem;margin:.3rem 0;cursor:pointer}
+#live p{background:#f4f4f4;padding:.4rem .6rem;border-radius:6px}</style>
+</head>
+<body>
+  <h1>Welcome, Daryl</h1>
+  <p>This page mentions Daryl a few times so you can see the extension work.
+     Daryl teaches AI. Ask Daryl anything. (The word "Darylize" should NOT change — it's not a whole word.)</p>
+  <p>Already crowned text like "King Daryl" should stay as-is (no double crown).</p>
+  <p><input placeholder="Type Daryl here — form fields are left alone"></p>
+
+  <h2>Dynamic content (added after load)</h2>
+  <button id="add">Add a line that says "Daryl"</button>
+  <div id="live"></div>
+
+  <script>
+    let n = 0;
+    document.getElementById("add").addEventListener("click", () => {
+      const p = document.createElement("p");
+      p.textContent = `Line ${++n}: Daryl just showed up dynamically.`;
+      document.getElementById("live").appendChild(p);
+    });
+  </script>
+</body>
+</html>
